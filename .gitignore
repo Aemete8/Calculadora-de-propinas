@@ -1,0 +1,24 @@
+# Dependencias (si en algún momento usas npm)
+node_modules/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editores e IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Variables de entorno
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build (por si en el futuro usas algún bundler)
+dist/
+build/

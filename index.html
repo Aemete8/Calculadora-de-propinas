@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Propinas</title>
+</head>
+<body>
+    <main class="main">
+        <h1 class="main-title">Calculadora de Propinas</h1>
+
+        <section class="inputs-section">
+            <label for="cuenta">Cuenta total ($)</label>
+            <input id="cuenta" placeholder="0.00" type="number" min="0" step="0.01">
+
+            <label for="porcentaje">Porcentaje de propina</label>
+            <input id="porcentaje" placeholder="15" type="number" min="0" max="100">
+
+            <label for="personas">Número de personas</label>
+            <input id="personas" placeholder="1" type="number" min="1">
+        </section>
+        <section class="results-section">
+            <p>Subtotal <span id="resultado-subtotal">$0.00</span></p>
+            <p>Propina <span id="resultado-propina">$0.00</span></p>
+            <p><strong>Total</strong> <span id="resultado-total">$0.00</span></p>
+            <p>Por persona <span id="resultado-por-persona">$0.00</span></p>
+        </section>
+    </main>
+
+    <script defer src="/js/script.js"></script>
+</body>
+</html>
