@@ -3,26 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <title>Calculadora de Propinas</title>
 </head>
 <body>
     <main class="main">
-        <h1 class="main-title">Calculadora de Propinas</h1>
-
+        <div class="main-container">
+            <div class="img-container">
+                <img class="main-img" src="css/calculate_math_currency_business_finance_calculator_accounting_icon_232639.png" alt="">
+            </div>
+            <h1 class="main-title">Calculadora de Propinas</h1>
+            <p class="main-text">Divide la cuenta y calcula la propina facilmente</p>
+        </div>
+        
         <section class="inputs-section">
-            <label for="cuenta">Cuenta total ($)</label>
-            <input id="cuenta" placeholder="0.00" type="number" min="0" step="0.01">
+            <p class="alert-message hidden"></p>
+            <label class="label-input" for="cuenta">Cuenta total ($)</label>
+            <input class="input" id="cuenta" placeholder="0.00" type="number" min="0" step="0.01">
 
-            <label for="porcentaje">Porcentaje de propina</label>
-            <input id="porcentaje" placeholder="15" type="number" min="0" max="100">
+            <label class="label-input" for="porcentaje">Porcentaje de propina(%)</label>
+            <input class="input" id="porcentaje" placeholder="15" type="number" min="0" max="100" value="0">
 
-            <label for="personas">Número de personas</label>
-            <input id="personas" placeholder="1" type="number" min="1">
+            <label class="label-input" for="personas">Número de personas</label>
+            <input class="input" id="personas" placeholder="1" type="number" min="1" value="1">
         </section>
         <section class="results-section">
             <p>Subtotal <span id="resultado-subtotal">$0.00</span></p>
-            <p>Propina <span id="resultado-propina">$0.00</span></p>
-            <p><strong>Total</strong> <span id="resultado-total">$0.00</span></p>
+            <p class="separator"> <span id="propina-total">Propina</span> <span id="resultado-propina">$0.00</span></p>
+            <p class="valor-total"><strong>Total</strong> <span id="resultado-total">$0.00</span></p>
             <p>Por persona <span id="resultado-por-persona">$0.00</span></p>
         </section>
     </main>

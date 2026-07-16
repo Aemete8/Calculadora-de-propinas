@@ -1,0 +1,139 @@
+/* Valores iniciales */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Poppins', Courier;
+    height: 100%;
+    margin-top: 64px;
+    background-color: #f7f1ea;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+/* Calculadora */
+
+.main{
+    width:clamp(300px, 60vw, 800px) ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 32px;
+    background-color: #FFFFFF;
+    border-radius: 24px;
+}
+.main-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.img-container{
+    display: flex;
+    justify-content: center;
+    background-color: #DBD3C9;
+    border-radius: 100%;
+    width: 64px;
+    margin: 0 auto;
+}
+
+.main-img{
+    min-width:64px;
+    margin: 0 auto;
+    padding: 12px;
+    text-align: center;
+}
+
+.main-title{
+    font-size: 32px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.main-text{
+    font-size: 16px;
+    color: #888888;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.inputs-section{
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #e1dddd;
+    margin-bottom: 24px;
+}
+
+.label-input{
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.input{
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #e1dddd;
+}
+
+.results-section{
+    padding-top: 12px;
+    border-top: 1px solid #e1dddd;
+    background-color: #DBD3C9;
+    border-radius: 12px;
+    padding: 8px;
+}
+
+.results-section p{
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.separator{
+    border-bottom: 1px solid #acacac;
+    padding-bottom: 8px;
+}
+
+.results-section p:last-child{
+    background-color: #ccc1b5;
+    padding: 8px;
+    border-radius: 12px;
+    margin-bottom: 0;
+}
+
+.valor-total strong,
+.valor-total span{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+.alert-message {
+    text-align: center;
+    font-size: 16px;
+    color: rgb(200, 41, 41);
+    margin-top: 8px;
+}
