@@ -18,8 +18,8 @@ function convertirValoresDecimales(valor) {
     return parseFloat(valor.value)
 }
 
-function actualizarContenido(span, contenido) {
-    span.textContent = contenido
+function actualizarContenido(elemento, contenido) {
+    elemento.textContent = contenido
 }
 
 function formatearNumero(numero) {
@@ -28,18 +28,19 @@ function formatearNumero(numero) {
 
 function mostrarBloque(bloqueTexto) {
     bloqueTexto.classList.remove('hidden')
-    bloqueTexto.textContent = 'Ingresa un valor valido, no se permiten valores negativos'
+    actualizarContenido(bloqueTexto, 'Ingresa un valor valido, no se permiten valores negativos')
 }
 
 function ocultarBloque(bloqueTexto) {
     bloqueTexto.classList.add('hidden')
 }
 
-function calcularResultados(subtotal, porcentajePropina, numeroPersonas) {
+function calcularResultados(valores) {
+    const { subtotal, porcentaje, personas} = valores;
 
-    const propina = subtotal * (porcentajePropina/100)
+    const propina = subtotal * (porcentaje/100)
     const total = subtotal + propina
-    const costoPorPersona = total / numeroPersonas
+    const costoPorPersona = total / personas
 
     return{
         propina,
@@ -65,35 +66,56 @@ function mostrarResultados(valores, resultados) {
     actualizarContenido(spanTotalPersonas, formatearNumero(costoPorPersona))
 }
 
-function validarDatos() {
-    
-}
-
-function calcularValores() { 
+function obtenerValores() {
     const valorSubtotal = convertirValoresDecimales(inputValorTotal)
-    const valorPorcentaje = convertirValoresEnteros(inputPorcentaje)
     const valorPersonas = convertirValoresEnteros(inputCantidadPersonas)
-
-    const valores ={
-        subtotal: valorSubtotal,
+    const valorPorcentaje = convertirValoresEnteros(inputPorcentaje)
+    
+    const valores = {
         porcentaje: valorPorcentaje,
+        subtotal: valorSubtotal,
         personas: valorPersonas
     }
 
+    return valores
+}
+
+function validarDatos(valores) {
+
     if (isNaN(valores.subtotal) || isNaN(valores.porcentaje)|| isNaN(valores.personas)){
-        reiniciarInterfaz()
-        return
-    } else if ( valores.subtotal < 0 || valores.porcentaje < 0 || valores.personas <= 0){  
-        mostrarBloque(bloqueMensajeAlerta)
-        return
-    } else {
-        const resultados = calcularResultados(valores.subtotal, valores.porcentaje, valores.personas)
-        mostrarResultados(valores, resultados)
-        ocultarBloque(bloqueMensajeAlerta)
-        return
+        return {
+            esValido: false,
+            motivo: 'valoresNaN'
+        }
+    }
+    if ( valores.subtotal < 0 || valores.porcentaje < 0 || valores.personas <= 0){  
+        return {
+            esValido: false,
+            motivo: 'valoresNegativos'
+        }
+    }
+
+    return {
+        esValido: true,
     }
 }
 
-inputValorTotal.addEventListener('input', calcularValores)
-inputPorcentaje.addEventListener('input', calcularValores)
-inputCantidadPersonas.addEventListener('input', calcularValores)
+function actualizarCalculadora() { 
+    const valores = obtenerValores()
+    const datosValidados = validarDatos(valores)
+
+    if (datosValidados.motivo === 'valoresNaN') {
+        reiniciarInterfaz()
+        ocultarBloque(bloqueMensajeAlerta)
+    } else if (datosValidados.motivo === 'valoresNegativos') {
+        mostrarBloque(bloqueMensajeAlerta)
+    } else {
+        const resultados = calcularResultados(valores)
+        ocultarBloque(bloqueMensajeAlerta)
+        mostrarResultados(valores, resultados)
+    }
+}
+
+inputValorTotal.addEventListener('input', actualizarCalculadora)
+inputPorcentaje.addEventListener('input', actualizarCalculadora)
+inputCantidadPersonas.addEventListener('input', actualizarCalculadora)
