@@ -162,6 +162,10 @@ button {
     right: 10px;
 }
 
+.calculator__input:last-child{
+    padding-left: 24px;
+}
+
 /* Cuando hay prefijo, añadir padding izquierdo al input */
 .calculator__input-wrapper .calculator__input {
     padding-left: 24px;
