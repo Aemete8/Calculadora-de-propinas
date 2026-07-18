@@ -8,7 +8,7 @@ const spanResultadoPropina = document.querySelector('#resultado-propina')
 const spanTotalPersonas = document.querySelector('#resultado-por-persona')
 const spanResultadoTotal = document.querySelector('#resultado-total')
 
-const bloqueMensajeAlerta = document.querySelector('.alert-message')
+const bloqueMensajeAlerta = document.querySelector('.calculator__error')
 
 function convertirValoresEnteros(valor) {
     return parseInt(valor.value)

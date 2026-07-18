@@ -3,39 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO -->
+    <meta name="description" content="Calculadora de propinas gratuita. Divide la cuenta entre personas y calcula el porcentaje de propina fácilmente.">
+    <meta name="author" content="Tu nombre o empresa">
+    <meta name="keywords" content="calculadora propinas, dividir cuenta, tip calculator, propina restaurante">
+
+    <!-- Open Graph (redes sociales) -->
+    <meta property="og:title" content="Calculadora de Propinas">
+    <meta property="og:description" content="Divide la cuenta y calcula la propina fácilmente.">
+    <meta property="og:type" content="website">
+
+    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/style.css">
     <title>Calculadora de Propinas</title>
 </head>
 <body>
-    <main class="main">
-        <div class="main-container">
-            <div class="img-container">
-                <img class="main-img" src="css/calculate_math_currency_business_finance_calculator_accounting_icon_232639.png" alt="">
-            </div>
-            <h1 class="main-title">Calculadora de Propinas</h1>
-            <p class="main-text">Divide la cuenta y calcula la propina facilmente</p>
-        </div>
+    <main class="calculator" aria-label="Calculadora de propinas">
+
+        <!-- Encabezado de la calculadora -->
+        <header class="calculator__header">
+            <figure class="calculator__icon-wrapper" aria-hidden="true">
+                <img
+                class="calculator__icon"
+                src="css/calculate_math_currency_business_finance_calculator_accounting_icon_232639.png"
+                alt=""
+                width="64"
+                height="64"
+                >
+            </figure>
+            <h1 class="calculator__title">Calculadora de Propinas</h1>
+            <p class="calculator__subtitle">Divide la cuenta y calcula la propina fácilmente</p>
+        </header>
+
+        <!-- Formulario de entrada -->
+        <section class="calculator__form" aria-label="Datos de la cuenta">
+        <!-- Mensaje de error accesible -->
+            <p
+            id="error-message"
+            class="calculator__error hidden"
+            role="alert"
+            aria-live="polite"
+            ></p>
+            <fieldset class="calculator__fieldset">
+                <legend class="sr-only">Ingresa los datos de tu cuenta</legend>
+                <div class="calculator__field">
+                    <label class="calculator__label" for="cuenta">Cuenta total</label>
+                    <div class="calculator__input-wrapper">
+                        <span class="calculator__input-prefix" aria-hidden="true">$</span>
+                        <input
+                        id="cuenta"
+                        class="calculator__input"
+                        type="number"
+                        inputmode="decimal"
+                        placeholder="0.00"
+                        min="0"
+                        step="0.01"
+                        aria-describedby="error-message"
+                        aria-required="true"
+                        >
+                    </div>
+                </div>
+
+                <div class="calculator__field">
+                    <label class="calculator__label" for="porcentaje">Porcentaje de propina</label>
+                    <div class="calculator__input-wrapper">
+                        <input
+                        id="porcentaje"
+                        class="calculator__input"
+                        type="number"
+                        inputmode="decimal"
+                        placeholder="15"
+                        min="0"
+                        max="100"
+                        value="0"
+                        aria-describedby="error-message"
+                        >
+                        <span class="calculator__input-suffix" aria-hidden="true">%</span>
+                    </div>
+                </div>
+
+                <div class="calculator__field">
+                    <label class="calculator__label" for="personas">Número de personas</label>
+                        <input
+                        class="calculator__input"
+                        id="personas"
+                        type="number"
+                        inputmode="numeric"
+                        placeholder="1"
+                        min="1"
+                        value="1"
+                        aria-describedby="error-message"
+                        >
+                </div>
+            </fieldset>
+        </section>
+
+        <!-- Resultados -->
+        <section class="calculator__results" aria-label="Resultados" aria-live="polite">
+            <dl class="calculator__results-list">
+            
+                <div class="calculator__result-row">
+                    <dt class="calculator__result-label">Subtotal</dt>
+                    <dd class="calculator__result-value" id="resultado-subtotal">$0.00</dd>
+                </div>
         
-        <section class="inputs-section">
-            <p class="alert-message hidden"></p>
-            <label class="label-input" for="cuenta">Cuenta total ($)</label>
-            <input class="input" id="cuenta" placeholder="0.00" type="number" min="0" step="0.01">
-
-            <label class="label-input" for="porcentaje">Porcentaje de propina(%)</label>
-            <input class="input" id="porcentaje" placeholder="15" type="number" min="0" max="100" value="0">
-
-            <label class="label-input" for="personas">Número de personas</label>
-            <input class="input" id="personas" placeholder="1" type="number" min="1" value="1">
+                <div class="calculator__result-row calculator__result-row--separator">
+                    <dt class="calculator__result-label" id="propina-total">Propina</dt>
+                    <dd class="calculator__result-value" id="resultado-propina">$0.00</dd>
+                </div>
+        
+                <div class="calculator__result-row calculator__result-row--total">
+                    <dt class="calculator__result-label">Total</dt>
+                    <dd class="calculator__result-value" id="resultado-total">$0.00</dd>
+                </div>
+        
+                <div class="calculator__result-row">
+                    <dt class="calculator__result-label">Por persona</dt>
+                    <dd class="calculator__result-value" id="resultado-por-persona">$0.00</dd>
+                </div>
+            
+            </dl>
         </section>
-        <section class="results-section">
-            <p>Subtotal <span id="resultado-subtotal">$0.00</span></p>
-            <p class="separator"> <span id="propina-total">Propina</span> <span id="resultado-propina">$0.00</span></p>
-            <p class="valor-total"><strong>Total</strong> <span id="resultado-total">$0.00</span></p>
-            <p>Por persona <span id="resultado-por-persona">$0.00</span></p>
-        </section>
+
     </main>
 
     <script defer src="./js/script.js"></script>
