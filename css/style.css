@@ -1,6 +1,132 @@
-/* ===========================
-    Reset y base
-=========================== */
+/* ============================================================
+    Calculadora de Propinas — style.css
+    ------------------------------------------------------------
+    Metodología:  BEM (Block Element Modifier)
+    Estrategia:   Mobile-first — los media queries amplían el diseño base, nunca lo sobreescriben hacia abajo.
+    Fuentes:      Inter (UI general) · JetBrains Mono (valores $)
+    Tema:         Light mode — paleta fría minimalista  
+    Índice
+    ──────────────────────────────────────────────────────────
+    1. Tokens de diseño (Custom Properties)
+    2. Reset y base
+    3. Utilidades de accesibilidad
+    4. Bloque: .calculator
+    5. Elemento: .calculator__header
+    6. Elemento: .calculator__form  /  Inputs
+    7. Elemento: .calculator__results
+    8. Utilidades globales
+    9. Responsive — breakpoints ascendentes (mobile-first)
+   ============================================================ */
+
+
+/* ============================================================
+    1. TOKENS DE DISEÑO
+    ------------------------------------------------------------
+    Todas las decisiones visuales (colores, espaciados, radios,
+    tipografía, sombras) se definen aquí como variables CSS.
+    Modificar este bloque es suficiente para cambiar el tema
+    completo de la interfaz.
+============================================================ */
+
+:root {
+    /* ── Paleta de color ──────────────────────────────────── */
+    --color-bg-page: #F0F4F8;
+    /* Fondo de página — gris azulado muy claro      */
+    --color-bg-card: #FFFFFF;
+    /* Fondo de la card principal                    */
+    --color-bg-results: #F8FAFC;
+    /* Fondo del bloque de resultados                */
+
+    --color-accent: #2563EB;
+    /* Azul índigo — acento primario                 */
+    --color-accent-light: #EFF6FF;
+    /* Tinte de acento para hover/focus              */
+    --color-accent-focus: rgba(37, 99, 235, 0.20);
+    /* Anillo de foco                */
+
+    --color-text-primary: #0F172A;
+    /* Texto principal — casi negro                  */
+    --color-text-secondary: #64748B;
+    /* Texto secundario / subtítulos                 */
+    --color-text-placeholder: #94A3B8;
+    /* Placeholder de inputs                         */
+
+    --color-border: #E2E8F0;
+    /* Bordes de inputs y separadores                */
+    --color-border-focus: #2563EB;
+    /* Borde en estado :focus                        */
+
+    --color-error-text: #DC2626;
+    /* Texto de error                                */
+    --color-error-bg: #FEF2F2;
+    /* Fondo del mensaje de error                    */
+    --color-error-border: #FECACA;
+    /* Borde del mensaje de error                    */
+
+    --color-total-accent: #2563EB;
+    /* Línea decorativa de la fila "Total"           */
+
+    /* ── Tipografía ──────────────────────────────────────── */
+    --font-ui: 'Inter', system-ui, sans-serif;
+    /* Interfaz general            */
+    --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+    /* Valores monetarios    */
+
+    --text-xs: 0.75rem;
+    /* 12px */
+    --text-sm: 0.875rem;
+    /* 14px */
+    --text-base: 1rem;
+    /* 16px */
+    --text-lg: 1.125rem;
+    /* 18px */
+    --text-xl: 1.25rem;
+    /* 20px */
+    --text-2xl: 1.5rem;
+    /* 24px */
+    --text-3xl: 1.875rem;
+    /* 30px */
+
+    /* ── Espaciado ───────────────────────────────────────── */
+    --space-1: 0.25rem;
+    /*  4px */
+    --space-2: 0.5rem;
+    /*  8px */
+    --space-3: 0.75rem;
+    /* 12px */
+    --space-4: 1rem;
+    /* 16px */
+    --space-5: 1.25rem;
+    /* 20px */
+    --space-6: 1.5rem;
+    /* 24px */
+    --space-8: 2rem;
+    /* 32px */
+    --space-10: 2.5rem;
+    /* 40px */
+
+    /* ── Bordes ──────────────────────────────────────────── */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+
+    /* ── Sombras ─────────────────────────────────────────── */
+    --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06),
+        0 4px 16px rgba(15, 23, 42, 0.08);
+
+    /* ── Transiciones ────────────────────────────────────── */
+    --transition-fast: 150ms ease;
+    --transition-base: 200ms ease;
+}
+
+
+/* ============================================================
+    2. RESET Y BASE
+    ------------------------------------------------------------
+    Reset mínimo y opinionado. Normaliza comportamientos entre
+    navegadores sin anular propiedades que raramente se necesitan.
+============================================================ */
 
 *,
 *::before,
@@ -10,7 +136,69 @@
     box-sizing: border-box;
 }
 
-/* Clase utilitaria de accesibilidad: oculta visualmente pero legible por lectores de pantalla */
+/* Previene desbordamiento horizontal en móviles */
+html {
+    overflow-x: hidden;
+}
+
+body {
+    font-family: var(--font-ui);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-page);
+
+    /* Centrado vertical suave en viewports altos */
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: var(--space-6) var(--space-4);
+
+    /* Mejora el renderizado de fuentes en pantallas de alta densidad */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hereda la fuente en todos los controles de formulario */
+button,
+input,
+select,
+textarea {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+/* Elimina las flechas de los inputs numéricos (Chrome, Safari, Edge) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Elimina las flechas de los inputs numéricos (Firefox) */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+
+/* ============================================================
+    3. UTILIDADES DE ACCESIBILIDAD
+============================================================ */
+
+/**
+   * .sr-only
+   * Oculta un elemento de forma visualmente, manteniéndolo
+   * en el árbol de accesibilidad para lectores de pantalla.
+   * Uso: <legend class="sr-only">, <span class="sr-only">, etc.
+   */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -23,101 +211,111 @@
     border: 0;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    min-height: 100vh;
-    margin-top: 64px;
-    background-color: #f7f1ea;
-    color: #1a1a1a;
-}
 
-button,
-input,
-select,
-textarea {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-    background: none;
-    border: none;
-}
-
-/* ===========================
-    Calculadora — bloque raíz
-=========================== */
+/* ============================================================
+    4. BLOQUE: .calculator
+    ------------------------------------------------------------
+    Contenedor raíz de toda la interfaz. Actúa como <main>
+    y define el ancho máximo de la card.
+============================================================ */
 
 .calculator {
-    width: clamp(300px, 60vw, 800px);
+    width: 100%;
+    max-width: 480px;
+
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
-    padding: 32px;
-    background-color: #ffffff;
-    border-radius: 24px;
+    gap: var(--space-6);
+
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-6);
+
+    /* Previene que el contenido se corte en viewports pequeños */
+    overflow: hidden;
 }
 
-/* ===========================
-    Encabezado
-=========================== */
+
+/* ============================================================
+    5. ELEMENTO: .calculator__header
+    ------------------------------------------------------------
+    Encabezado centrado con ícono, título y subtítulo.
+============================================================ */
 
 .calculator__header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 24px;
+    gap: var(--space-2);
+    text-align: center;
+
+    /* Línea decorativa inferior que separa el header del form */
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
 }
 
+/**
+   * .calculator__icon-wrapper
+   * Contenedor circular del ícono decorativo.
+   * Usa el color de acento con opacidad para no competir
+   * con los elementos interactivos.
+   */
 .calculator__icon-wrapper {
     display: flex;
-    justify-content: center;
     align-items: center;
-    background-color: #dbd3c9;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    background-color: var(--color-accent-light);
     border-radius: 50%;
-    width: 64px;
-    height: 64px;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-1);
 }
 
 .calculator__icon {
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
 }
 
 .calculator__title {
-    font-size: 2rem;
+    font-size: var(--text-2xl);
     font-weight: 600;
-    text-align: center;
+    color: var(--color-text-primary);
     line-height: 1.2;
+    letter-spacing: -0.02em;
 }
 
 .calculator__subtitle {
-    font-size: 1rem;
-    color: #888888;
-    text-align: center;
-    margin-top: 4px;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    font-weight: 400;
 }
 
-/* ===========================
-    Formulario / Inputs
-=========================== */
 
-.calculator__form {
-    border-top: 1px solid #e1dddd;
-    padding-top: 24px;
-    margin-bottom: 24px;
-}
+/* ============================================================
+    6. ELEMENTO: .calculator__form — Inputs
+    ------------------------------------------------------------
+    Sección de entradas del usuario: cuenta, porcentaje, personas.
+============================================================ */
 
+/* .calculator__form no necesita estilos de layout propios;
+     el gap del .calculator raíz ya maneja el espaciado.        */
+
+/**
+   * .calculator__error
+   * Mensaje de error accesible. Oculto por defecto (.hidden).
+   * Se muestra mediante JS cuando hay datos inválidos.
+   */
 .calculator__error {
+    font-size: var(--text-sm);
+    color: var(--color-error-text);
+    background-color: var(--color-error-bg);
+    border: 1px solid var(--color-error-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-3);
     text-align: center;
-    font-size: 0.9rem;
-    color: #be1212;
-    margin-bottom: 12px;
-    border-radius: 6px;
-    padding: 6px 8px;
-    background-color: #fff0f0;
+    margin-bottom: var(--space-2);
 }
 
 .calculator__fieldset {
@@ -125,125 +323,267 @@ button {
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-4);
 }
 
+/* Grupo label + input */
 .calculator__field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: var(--space-2);
 }
 
 .calculator__label {
-    font-size: 1rem;
+    font-size: var(--text-sm);
     font-weight: 500;
+    color: var(--color-text-primary);
 }
 
+/**
+   * .calculator__input-wrapper
+   * Contenedor relativo que permite posicionar los símbolos
+   * $ y % como decoraciones absolutas dentro del input.
+   */
 .calculator__input-wrapper {
     position: relative;
     display: flex;
     align-items: center;
 }
 
+/* Símbolo de prefijo ($) y sufijo (%) — solo decorativos */
 .calculator__input-prefix,
 .calculator__input-suffix {
     position: absolute;
-    color: #888888;
-    font-size: 1rem;
+    font-size: var(--text-sm);
+    color: var(--color-text-placeholder);
     pointer-events: none;
     user-select: none;
+    line-height: 1;
 }
 
 .calculator__input-prefix {
-    left: 10px;
+    left: var(--space-3);
 }
 
 .calculator__input-suffix {
-    right: 10px;
+    right: var(--space-3);
 }
 
-/* Cuando hay prefijo, añadir padding izquierdo al input */
+/* Input con prefijo: padding-left para no solapar el símbolo $ */
 .calculator__input-wrapper .calculator__input {
-    padding-left: 24px;
+    padding-left: var(--space-6);
 }
 
-/* Cuando hay sufijo, añadir padding derecho al input */
+/* Input con sufijo: padding-right para no solapar el símbolo % */
 .calculator__input-wrapper:has(.calculator__input-suffix) .calculator__input {
-    padding-right: 28px;
+    padding-right: var(--space-6);
 }
 
+/**
+   * .calculator__input
+   * Estilo base de todos los campos de texto.
+   * Padding-left se sobreescribe cuando hay un prefijo (regla anterior).
+   */
 .calculator__input {
     width: 100%;
-    padding: 10px;
-    padding-left: 24px;
-    border-radius: 8px;
-    border: 1px solid #e1dddd;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    padding: var(--space-3) var(--space-3);
+    font-size: var(--text-base);
+    color: var(--color-text-primary);
+
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    transition:
+        border-color var(--transition-base),
+        box-shadow var(--transition-base);
 }
 
+.calculator__input::placeholder {
+    color: var(--color-text-placeholder);
+}
+
+/* Estado :hover — señal visual de interactividad */
+.calculator__input:hover {
+    border-color: #CBD5E1;
+}
+
+/* Estado :focus — indicador de accesibilidad por teclado */
 .calculator__input:focus {
     outline: none;
-    border-color: #9c8b7e;
-    box-shadow: 0 0 0 3px rgba(156, 139, 126, 0.25);
+    border-color: var(--color-border-focus);
+    box-shadow: 0 0 0 3px var(--color-accent-focus);
 }
 
-/* ===========================
-    Resultados
-=========================== */
+
+/* ============================================================
+    7. ELEMENTO: .calculator__results
+    ------------------------------------------------------------
+    Sección de salida de resultados calculados.
+    Firma de diseño: línea vertical de acento azul en la fila
+    "Total" para distinguirla sin usar fondos de color sólido.
+============================================================ */
 
 .calculator__results {
-    border-top: 1px solid #e1dddd;
-    background-color: #efe8df;
-    border-radius: 12px;
-    padding: 12px;
+    background-color: var(--color-bg-results);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
 }
 
+/* <dl> — lista de pares etiqueta/valor */
 .calculator__results-list {
     display: flex;
     flex-direction: column;
     gap: 0;
 }
 
+/**
+   * .calculator__result-row
+   * Fila individual de resultado. Distribuye etiqueta (izquierda)
+   * y valor monetario (derecha) con justify-content: space-between.
+   */
 .calculator__result-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 0;
-    margin-bottom: 2px;
+    padding: var(--space-3) var(--space-2);
 }
 
+/**
+   * .calculator__result-row--separator
+   * Modificador BEM: añade un separador horizontal debajo de
+   * la fila de Propina para dividir visualmente subtotales del total.
+   */
 .calculator__result-row--separator {
-    border-bottom: 1px solid #acacac;
-    padding-bottom: 10px;
-    margin-bottom: 8px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-2);
 }
 
+/**
+   * .calculator__result-row--total
+   * Modificador BEM: resalta la fila del Total.
+   * Firma visual del diseño: borde izquierdo de color acento
+   * en lugar de un fondo de bloque, más limpio y moderno.
+   */
 .calculator__result-row--total {
-    background-color: #dfd5c9;
-    padding: 8px 10px;
-    border-radius: 10px;
+    border-left: 3px solid var(--color-total-accent);
+    background-color: var(--color-accent-light);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding-left: var(--space-3);
+    margin: var(--space-1) 0;
 }
 
+/* Etiqueta de cada fila (dt) */
 .calculator__result-label {
-    font-size: 1rem;
+    font-size: var(--text-sm);
     font-weight: 400;
+    color: var(--color-text-secondary);
 }
 
+/**
+   * .calculator__result-value (dd)
+   * Usa JetBrains Mono para que los dígitos alineen
+   * verticalmente, mejorando la lectura de montos.
+   */
 .calculator__result-value {
-    font-size: 1rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
     font-weight: 500;
+    color: var(--color-text-primary);
 }
 
-.calculator__result-row--total .calculator__result-label,
+/* Sobreescrituras para la fila Total: tamaño y peso mayores */
+.calculator__result-row--total .calculator__result-label {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-accent);
+}
+
 .calculator__result-row--total .calculator__result-value {
-    font-size: 1.25rem;
+    font-size: var(--text-lg);
     font-weight: 700;
+    color: var(--color-accent);
 }
 
-/* ===========================
-    Utilidades
-=========================== */
 
+/* ============================================================
+    8. UTILIDADES GLOBALES
+============================================================ */
+
+/**
+   * .hidden
+   * Elimina el elemento del flujo visual y del flujo de
+   * accesibilidad. Usado por JS para mostrar/ocultar el error.
+   */
 .hidden {
     display: none;
+}
+
+
+/* ============================================================
+    9. RESPONSIVE — BREAKPOINTS ASCENDENTES (MOBILE-FIRST)
+    ------------------------------------------------------------
+    La estrategia mobile-first implica que los estilos base
+    (escritos arriba) son los del viewport más pequeño.
+    Los @media queries solo amplían o ajustan desde ahí.
+============================================================ */
+
+/* ── Tablets y pantallas medianas (≥ 600px) ──────────────── */
+@media (min-width: 600px) {
+
+    body {
+        /* En tablets hay espacio para centrar verticalmente */
+        align-items: center;
+        padding: var(--space-8) var(--space-6);
+    }
+
+    .calculator {
+        padding: var(--space-8);
+        gap: var(--space-8);
+    }
+
+    .calculator__title {
+        font-size: var(--text-3xl);
+    }
+
+    .calculator__results {
+        padding: var(--space-5);
+    }
+
+    .calculator__result-row {
+        padding: var(--space-3) var(--space-3);
+    }
+
+    .calculator__result-value {
+        font-size: var(--text-base);
+    }
+
+    .calculator__result-row--total .calculator__result-value {
+        font-size: var(--text-xl);
+    }
+}
+
+/* ── Desktops (≥ 960px) ──────────────────────────────────── */
+@media (min-width: 960px) {
+
+    .calculator {
+        /* La card puede crecer un poco más en desktop */
+        max-width: 520px;
+    }
+}
+
+/* ── Preferencias de movimiento reducido ─────────────────── */
+/**
+   * Respeta la configuración del sistema operativo del usuario.
+   * Si prefiere menos animaciones, se eliminan las transiciones.
+   */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+    }
 }

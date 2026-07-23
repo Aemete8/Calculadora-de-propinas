@@ -1,137 +1,181 @@
 <!DOCTYPE html>
+<!-- ============================================================
+Calculadora de Propinas — index.html
+------------------------------------------------------------
+Estructura semántica del documento principal.
+
+Metodología de clases: BEM (Block Element Modifier)
+Accesibilidad: WCAG 2.1 AA — roles ARIA, aria-live, aria-label
+Responsive: Mobile-first con breakpoints en CSS
+
+Bloques BEM presentes:
+- .calculator → Contenedor raíz
+- .calculator__header → Encabezado con ícono y títulos
+- .calculator__form → Sección de inputs
+- .calculator__results → Sección de resultados
+============================================================ -->
+
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- SEO -->
-    <meta name="description" content="Calculadora de propinas gratuita. Divide la cuenta entre personas y calcula el porcentaje de propina fácilmente.">
+    <!-- ── SEO ─────────────────────────────────────────────── -->
+    <meta name="description"
+        content="Calculadora de propinas gratuita. Divide la cuenta entre personas y calcula el porcentaje de propina fácilmente.">
     <meta name="author" content="Tu nombre o empresa">
     <meta name="keywords" content="calculadora propinas, dividir cuenta, tip calculator, propina restaurante">
 
-    <!-- Open Graph (redes sociales) -->
+    <!-- ── Open Graph (redes sociales) ──────────────────────── -->
     <meta property="og:title" content="Calculadora de Propinas">
     <meta property="og:description" content="Divide la cuenta y calcula la propina fácilmente.">
     <meta property="og:type" content="website">
 
-    <!-- Fuentes -->
+    <!-- ── Fuentes: Inter (UI) + JetBrains Mono (valores) ──── -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
+    <!-- ── Estilos ──────────────────────────────────────────── -->
     <link rel="stylesheet" href="css/style.css">
+
     <title>Calculadora de Propinas</title>
 </head>
+
 <body>
+
+    <!--
+    ── MAIN: .calculator ──────────────────────────────────────
+    Bloque raíz BEM. aria-label describe el propósito
+    del landmark <main> a lectores de pantalla.
+    -->
     <main class="calculator" aria-label="Calculadora de propinas">
 
-        <!-- Encabezado de la calculadora -->
+        <!-- ── ENCABEZADO ─────────────────────────────────────── -->
         <header class="calculator__header">
+        <!--
+        Ícono decorativo. aria-hidden="true" lo excluye
+        del árbol de accesibilidad ya que no aporta información.
+        -->
             <figure class="calculator__icon-wrapper" aria-hidden="true">
-                <img
-                class="calculator__icon"
-                src="css/calculate_math_currency_business_finance_calculator_accounting_icon_232639.png"
-                alt=""
-                width="64"
-                height="64"
-                >
+                <img class="calculator__icon" src="img/calculate_math_currency_business_finance_calculator_accounting_icon_232639.png" alt="" width="36" height="36">
             </figure>
+
             <h1 class="calculator__title">Calculadora de Propinas</h1>
             <p class="calculator__subtitle">Divide la cuenta y calcula la propina fácilmente</p>
-        </header>
 
-        <!-- Formulario de entrada -->
+        </header>
+        <!-- /calculator__header -->
+
+        <!-- ── FORMULARIO DE ENTRADA ──────────────────────────── -->
+        <!--
+            aria-label describe la sección a lectores de pantalla.
+            El separador visual se logra con CSS (border-top).
+        -->
         <section class="calculator__form" aria-label="Datos de la cuenta">
-        <!-- Mensaje de error accesible -->
-            <p
-            id="error-message"
-            class="calculator__error hidden"
-            role="alert"
-            aria-live="polite"
-            ></p>
+
+        <!--            
+        Mensaje de error accesible.
+        role="alert" + aria-live="polite" garantizan que los
+        lectores de pantalla anuncien el mensaje al aparecer.
+        La clase .hidden (display: none) lo oculta por defecto.
+        -->
+            <p id="error-message" class="calculator__error hidden" role="alert" aria-live="polite"></p>
+
             <fieldset class="calculator__fieldset">
+
+                <!-- .sr-only oculta la leyenda visualmente sin eliminarla del DOM accesible -->
                 <legend class="sr-only">Ingresa los datos de tu cuenta</legend>
+
+                <!-- ── Campo: Cuenta total ─────────────────────────── -->
                 <div class="calculator__field">
                     <label class="calculator__label" for="cuenta">Cuenta total</label>
                     <div class="calculator__input-wrapper">
                         <span class="calculator__input-prefix" aria-hidden="true">$</span>
-                        <input
-                        id="cuenta"
-                        class="calculator__input"
-                        type="number"
-                        inputmode="decimal"
-                        placeholder="0.00"
-                        min="0"
-                        step="0.01"
-                        aria-describedby="error-message"
-                        aria-required="true"
-                        >
+                        <input id="cuenta" class="calculator__input" type="number" inputmode="decimal"
+                            placeholder="0.00" min="0" step="0.01" aria-describedby="error-message"
+                            aria-required="true">
                     </div>
                 </div>
+                <!-- /campo cuenta total -->
 
+                <!-- ── Campo: Porcentaje de propina ───────────────── -->
                 <div class="calculator__field">
                     <label class="calculator__label" for="porcentaje">Porcentaje de propina</label>
                     <div class="calculator__input-wrapper">
-                        <input
-                        id="porcentaje"
-                        class="calculator__input"
-                        type="number"
-                        inputmode="decimal"
-                        placeholder="15"
-                        min="0"
-                        max="100"
-                        value=""
-                        aria-describedby="error-message"
-                        >
+                        <input id="porcentaje" class="calculator__input" type="number" inputmode="decimal"
+                            placeholder="15" min="0" max="100" aria-describedby="error-message">
                         <span class="calculator__input-suffix" aria-hidden="true">%</span>
                     </div>
                 </div>
+                <!-- /campo porcentaje -->
 
+                <!-- ── Campo: Número de personas ──────────────────── -->
                 <div class="calculator__field">
                     <label class="calculator__label" for="personas">Número de personas</label>
-                        <input
-                        class="calculator__input"
-                        id="personas"
-                        type="number"
-                        inputmode="numeric"
-                        placeholder="1"
-                        min="1"
-                        value=""
-                        aria-describedby="error-message"
-                        >
+                    <input id="personas" class="calculator__input" type="number" inputmode="numeric" placeholder="1"
+                        min="1" aria-describedby="error-message">
                 </div>
-            </fieldset>
-        </section>
+                <!-- /campo personas -->
 
-        <!-- Resultados -->
+            </fieldset>
+
+        </section>
+        <!-- /calculator__form -->
+
+        <!-- ── RESULTADOS ─────────────────────────────────────── -->
+
+        <!-- aria-live="polite" notifica a lectores de pantalla
+        cada vez que los valores se actualizan dinámicamente
+        sin recargar la página. -->
+
         <section class="calculator__results" aria-label="Resultados" aria-live="polite">
+
+        <!--
+        <dl> (description list) es el elemento semántico correcto
+        para pares clave-valor como etiqueta/monto.
+        -->
             <dl class="calculator__results-list">
-            
+
+                <!-- Subtotal -->
                 <div class="calculator__result-row">
                     <dt class="calculator__result-label">Subtotal</dt>
                     <dd class="calculator__result-value" id="resultado-subtotal">$0.00</dd>
                 </div>
-        
+
+                <!-- Propina — el separador visual se aplica con el modificador BEM -->
                 <div class="calculator__result-row calculator__result-row--separator">
                     <dt class="calculator__result-label" id="propina-total">Propina</dt>
                     <dd class="calculator__result-value" id="resultado-propina">$0.00</dd>
                 </div>
-        
+
+                <!-- Total — destacado con el modificador --total -->
                 <div class="calculator__result-row calculator__result-row--total">
                     <dt class="calculator__result-label">Total</dt>
                     <dd class="calculator__result-value" id="resultado-total">$0.00</dd>
                 </div>
-        
+
+                <!-- Por persona -->
                 <div class="calculator__result-row">
                     <dt class="calculator__result-label">Por persona</dt>
                     <dd class="calculator__result-value" id="resultado-por-persona">$0.00</dd>
                 </div>
-            
+
             </dl>
+
         </section>
+        <!-- /calculator__results -->
 
     </main>
+    <!-- /calculator -->
 
+    <!-- ── SCRIPTS ────────────────────────────────────────────
+    defer: el script se descarga en paralelo y ejecuta
+    solo después de que el DOM esté completamente parseado.
+    -->
     <script defer src="./js/script.js"></script>
+
 </body>
+
 </html>
